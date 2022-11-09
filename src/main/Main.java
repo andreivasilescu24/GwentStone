@@ -86,27 +86,48 @@ public final class Main {
         StartGameInput startGameInput;
 
         DecksInput player1_all_decks, player2_all_decks;
+
         startGameInput = inputData.getGames().get(0).getStartGame();
 
+        // obtin toate deck-urile
         player1_all_decks = inputData.getPlayerOneDecks();
         player2_all_decks = inputData.getPlayerTwoDecks();
 
+        // obtin index-urile corespunzatoare deck-urilor celor 2 jucatori
         int index_player1_deck = startGameInput.getPlayerOneDeckIdx();
         int index_player2_deck = startGameInput.getPlayerTwoDeckIdx();
 
+        // obtin deck-ul de la index
         ArrayList<CardInput> player1_deck = player1_all_decks.getDecks().get(index_player1_deck);
         ArrayList<CardInput> player2_deck = player2_all_decks.getDecks().get(index_player2_deck);
 
+        // amestec cartile din deck-uri
         Collections.shuffle(player1_deck, new Random(startGameInput.getShuffleSeed()));
         Collections.shuffle(player2_deck, new Random(startGameInput.getShuffleSeed()));
 
+        // introducem in array-ul de carti din mana, prima carte trasa din deck
         player1.getHandCards().add(player1_deck.get(0));
         player2.getHandCards().add(player2_deck.get(0));
+
+        // elimin din deck prima carte trasa
         player1_deck.remove(0);
         player2_deck.remove(0);
 
+        // obtin cei doi eroi corespunzatori fiecarui jucator
         CardInput player1_hero = startGameInput.getPlayerOneHero();
         CardInput player2_hero = startGameInput.getPlayerTwoHero();
+
+        //obtin actiunile
+        ArrayList<ActionsInput> actions = inputData.getGames().get(0).getActions();
+        ActionsInput actual_action;
+        for(ActionsInput action : actions) {
+            actual_action = action.getCommand();
+
+//            if(actual_action.getCommand().equals("getPlayerDeck"))
+//                else if(actual_action.getCommand().equals("getPlayerHero"))
+//                    else if(actual_action.getCommand().equals("getPlayerTurn"))
+
+        }
 
 //        System.out.println(player1_hero + "\n" + player2_hero);
 

@@ -2,12 +2,14 @@ Starting audit...
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:9:14: Using the '.*' form of import should be avoided - fileio.*. [AvoidStarImport]
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:88:20: Name 'player1_all_decks' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:88:39: Name 'player2_all_decks' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
-[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:94:13: Name 'index_player1_deck' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
-[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:95:13: Name 'index_player2_deck' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
-[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:97:30: Name 'player1_deck' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
-[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:98:30: Name 'player2_deck' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
-[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:108:19: Name 'player1_hero' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
-[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:109:19: Name 'player2_hero' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
+[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:95:13: Name 'index_player1_deck' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
+[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:96:13: Name 'index_player2_deck' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
+[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:98:30: Name 'player1_deck' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
+[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:99:30: Name 'player2_deck' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
+[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:109:19: Name 'player1_hero' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
+[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:110:19: Name 'player2_hero' must match pattern '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
+[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:113:9: 'for' construct must use '{}'s. [NeedBraces]
+[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:113:9: 'for' is not followed by whitespace. [WhitespaceAfter]
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Player.java:10:5: Class 'Player' looks like designed for extension (can be subclassed), but the method 'getHandCards' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Player' final or making the method 'getHandCards' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 Audit done.
-Checkstyle ends with 10 errors.
+Checkstyle ends with 12 errors.
