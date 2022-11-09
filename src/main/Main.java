@@ -119,9 +119,10 @@ public final class Main {
 
         //obtin actiunile
         ArrayList<ActionsInput> actions = inputData.getGames().get(0).getActions();
-        ActionsInput actual_action;
+        String actual_action;
         for(ActionsInput action : actions) {
             actual_action = action.getCommand();
+            System.out.println(actual_action);
 
 //            if(actual_action.getCommand().equals("getPlayerDeck"))
 //                else if(actual_action.getCommand().equals("getPlayerHero"))
