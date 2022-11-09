@@ -1,0 +1,5 @@
+ ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+
+        objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+        objectWriter.writeValue(new File(filePath2), player1_all_decks.getDecks().get(index_player1_deck));
+    }
