@@ -120,17 +120,40 @@ public final class Main {
         //obtin actiunile
         ArrayList<ActionsInput> actions = inputData.getGames().get(0).getActions();
         String actual_action;
+
+        CardTypeCaster card_caster = new CardTypeCaster();
+        ActionInterpretor actionInterpretor = new ActionInterpretor();
+
         for(ActionsInput action : actions) {
             actual_action = action.getCommand();
-            output.addObject().put("command", actual_action).put("playerIdx", action.getPlayerIdx()).putPOJO("output", player2_deck);
-//            if(actual_action.equals("getPlayerDeck"))
-//
-//                else if(actual_action.equals("getPlayerHero"))
-//                    else if(actual_action.equals("getPlayerTurn"))
+
+            if(actual_action.equals("getPlayerDeck")) {
+                if(action.getPlayerIdx() == 1) {
+                    card_caster.cast_cards(player1_deck, player1);
+                    actionInterpretor.getPlayerDeck(output, player1, action);
+                }
+
+                else{
+                    card_caster.cast_cards(player2_deck, player2);
+                    actionInterpretor.getPlayerDeck(output, player2, action);
+                }
+            }
+
+            else if(actual_action.equals("getPlayerHero")) {
+                if (action.getPlayerIdx() == 1) {
+                    card_caster.cast_hero(player1_hero, player1);
+                    actionInterpretor.getPlayerHero(output, player1, action);
+                }
+                else{
+                    card_caster.cast_hero(player2_hero, player2);
+                    actionInterpretor.getPlayerHero(output, player2, action);
+                }
+            }
+
+            else if(actual_action.equals("getPlayerTurn"))
+                actionInterpretor.getPlayerTurn(output, startGameInput.getStartingPlayer(), action);
 
         }
-
-//        System.out.println(player1_hero + "\n" + player2_hero);
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(filePath2), output);
