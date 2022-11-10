@@ -1,7 +1,12 @@
 package fileio;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.ArrayList;
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_EMPTY)
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public final class CardInput {
     private int mana;
     private int attackDamage;

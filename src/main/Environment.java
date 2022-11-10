@@ -1,4 +1,4 @@
 package main;
 
-public class Environment {
+public class Environment extends DeckCard {
 }

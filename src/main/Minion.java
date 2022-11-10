@@ -1,6 +1,6 @@
 package main;
 
-public class Minion {
+public class Minion extends DeckCard {
     private int mana;
     private int health;
     private int attackDamage;
