@@ -123,7 +123,8 @@ public final class Main {
         for(ActionsInput action : actions) {
             actual_action = action.getCommand();
             System.out.println(actual_action);
-
+            output.addObject().put("command", actual_action).put("playerIdx", action.getPlayerIdx())
+                    .putPOJO("output", player1_deck);
 //            if(actual_action.getCommand().equals("getPlayerDeck"))
 //                else if(actual_action.getCommand().equals("getPlayerHero"))
 //                    else if(actual_action.getCommand().equals("getPlayerTurn"))
@@ -133,6 +134,6 @@ public final class Main {
 //        System.out.println(player1_hero + "\n" + player2_hero);
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
-        objectWriter.writeValue(new File(filePath2), inputData);
+        objectWriter.writeValue(new File(filePath2), output);
     }
 }
