@@ -5,12 +5,29 @@ import fileio.CardInput;
 import java.util.ArrayList;
 
 public class Player {
-    private ArrayList<CardInput> handCards = new ArrayList<>();
-    private ArrayList<DeckCard> deck_cards = new ArrayList<>();
+    private ArrayList<DeckCard> handCards = new ArrayList<>();
+    private ArrayList<DeckCard> deckCards = new ArrayList<>();
 
+    private int round;
     private Hero hero;
     private int index;
     private boolean turn;
+
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    private int mana;
+    public int getMana() {
+        return mana;
+    }
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
 
     public int getIndex() {
         return index;
@@ -36,19 +53,19 @@ public class Player {
         return turn;
     }
 
-    public ArrayList<CardInput> getHandCards() {
+    public ArrayList<DeckCard> getHandCards() {
         return handCards;
     }
 
-    public ArrayList<DeckCard> getDeck_cards() {
-        return deck_cards;
+    public ArrayList<DeckCard> getDeckCards() {
+        return deckCards;
     }
 
-    public void setHandCards(ArrayList<CardInput> handCards) {
+    public void setHandCards(ArrayList<DeckCard> handCards) {
         this.handCards = handCards;
     }
 
-    public void setDeck_cards(ArrayList<DeckCard> deck_cards) {
-        this.deck_cards = deck_cards;
+    public void setDeckCards(ArrayList<DeckCard> deckCards) {
+        this.deckCards = deckCards;
     }
 }

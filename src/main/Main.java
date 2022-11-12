@@ -77,6 +77,8 @@ public final class Main {
         Player player1 = new Player();
         Player player2 = new Player();
 
+        Table table = new Table();
+
         ActionsInput actionsInput;
         CardInput cardInput;
         Coordinates coordinates;
@@ -87,7 +89,13 @@ public final class Main {
 
         DecksInput player1_all_decks, player2_all_decks;
 
+        // TODO: Change indexing as 0 and make some general rule for "get" method
         startGameInput = inputData.getGames().get(0).getStartGame();
+
+        int startingPlayer = startGameInput.getStartingPlayer();
+        if(startingPlayer == 1)
+            player1.setTurn(true);
+        else player2.setTurn(true);
 
         // obtin toate deck-urile
         player1_all_decks = inputData.getPlayerOneDecks();
@@ -105,55 +113,101 @@ public final class Main {
         Collections.shuffle(player1_deck, new Random(startGameInput.getShuffleSeed()));
         Collections.shuffle(player2_deck, new Random(startGameInput.getShuffleSeed()));
 
+        // Cast deck cards
+        CardTypeCaster card_caster = new CardTypeCaster();
+        card_caster.cast_cards(player1_deck, player1);
+        card_caster.cast_cards(player2_deck, player2);
+
         // introducem in array-ul de carti din mana, prima carte trasa din deck
-        player1.getHandCards().add(player1_deck.get(0));
-        player2.getHandCards().add(player2_deck.get(0));
+        player1.getHandCards().add(player1.getDeckCards().get(0));
+        player2.getHandCards().add(player2.getDeckCards().get(0));
 
         // elimin din deck prima carte trasa
-        player1_deck.remove(0);
-        player2_deck.remove(0);
+        player1.getDeckCards().remove(0);
+        player2.getDeckCards().remove(0);
 
         // obtin cei doi eroi corespunzatori fiecarui jucator
         CardInput player1_hero = startGameInput.getPlayerOneHero();
         CardInput player2_hero = startGameInput.getPlayerTwoHero();
 
+        card_caster.cast_hero(player1_hero, player1);
+        card_caster.cast_hero(player2_hero, player2);
+
+
         //obtin actiunile
         ArrayList<ActionsInput> actions = inputData.getGames().get(0).getActions();
         String actual_action;
 
-        CardTypeCaster card_caster = new CardTypeCaster();
         ActionInterpretor actionInterpretor = new ActionInterpretor();
+
+//        for(DeckCard test_card : player1.getDeckCards())
+//            System.out.println(test_card.getName() + " " + test_card.getMana());
+//        System.out.println("*************");
+//        for(DeckCard test_card : player2.getDeckCards())
+//            System.out.println(test_card.getName() + " " + test_card.getMana());
+//        System.out.println("**********************");
+//        System.out.println(player2.getDeckCards());
+//        System.out.println(player2.getHandCards());
+//
+
+        player1.setRound(1);
+        player2.setRound(1);
+        player1.setMana(player1.getRound());
+        player2.setMana(player2.getRound());
+
+        int end_player_turn_counter = 0;
 
         for(ActionsInput action : actions) {
             actual_action = action.getCommand();
-
             if(actual_action.equals("getPlayerDeck")) {
-                if(action.getPlayerIdx() == 1) {
-                    card_caster.cast_cards(player1_deck, player1);
+                if (action.getPlayerIdx() == 1) {
+//                    card_caster.cast_cards(player1_deck, player1);
                     actionInterpretor.getPlayerDeck(output, player1, action);
-                }
-
-                else{
-                    card_caster.cast_cards(player2_deck, player2);
+                } else {
+//                    card_caster.cast_cards(player2_deck, player2);
                     actionInterpretor.getPlayerDeck(output, player2, action);
                 }
             }
-
             else if(actual_action.equals("getPlayerHero")) {
                 if (action.getPlayerIdx() == 1) {
-                    card_caster.cast_hero(player1_hero, player1);
+//                    card_caster.cast_hero(player1_hero, player1);
                     actionInterpretor.getPlayerHero(output, player1, action);
                 }
                 else{
-                    card_caster.cast_hero(player2_hero, player2);
+//                    card_caster.cast_hero(player2_hero, player2);
                     actionInterpretor.getPlayerHero(output, player2, action);
                 }
             }
 
-            else if(actual_action.equals("getPlayerTurn"))
-                actionInterpretor.getPlayerTurn(output, startGameInput.getStartingPlayer(), action);
-
+                else if(actual_action.equals("getPlayerTurn"))
+                    actionInterpretor.getPlayerTurn(output, player1, player2, action);
+                    else if(actual_action.equals("endPlayerTurn")) {
+                        end_player_turn_counter++;
+                        actionInterpretor.endPlayerTurn(player1, player2, end_player_turn_counter);
+                    }
+                        else if(actual_action.equals("placeCard")) {
+                            int turn = actionInterpretor.checkPlayerTurn(player1, player2);
+                            if(turn != 0)
+                                if(turn == 1)
+                                    actionInterpretor.placeCard(table, player1, action, turn);
+                                else actionInterpretor.placeCard(table, player2, action, turn);
+                        }
+                            else if(actual_action.equals("getCardsInHand")) {
+                                    if(action.getPlayerIdx() == 1)
+                                        actionInterpretor.getCardsInHand(output, player1, action);
+                                    else actionInterpretor.getCardsInHand(output, player2, action);
+                            }
+                                else if(actual_action.equals("getPlayerMana")) {
+                                    if(action.getPlayerIdx() == 1)
+                                        actionInterpretor.getPlayerMana(output, player1, action);
+                                    else actionInterpretor.getPlayerMana(output, player2, action);
+                                }
+                                    else if(actual_action.equals("getCardsOnTable")) {
+                                        actionInterpretor.getCardsOnTable(output, table, action);
+                                    }
         }
+
+//        System.out.println("---------------------\n");
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(filePath2), output);

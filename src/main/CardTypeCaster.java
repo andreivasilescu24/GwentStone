@@ -21,7 +21,7 @@ public class CardTypeCaster {
             }
 
         }
-        player.setDeck_cards(deckCards);
+        player.setDeckCards(deckCards);
 
     }
 
