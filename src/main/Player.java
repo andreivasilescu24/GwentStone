@@ -10,7 +10,7 @@ public class Player {
 
     private int round;
     private Hero hero;
-    private int index;
+//    private int index;
     private boolean turn;
 
     public void setRound(int round) {
@@ -29,9 +29,9 @@ public class Player {
         this.mana = mana;
     }
 
-    public int getIndex() {
-        return index;
-    }
+//    public int getIndex() {
+//        return index;
+//    }
 
     public void setHero(Hero hero) {
         this.hero = hero;
@@ -41,9 +41,9 @@ public class Player {
         return hero;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
+//    public void setIndex(int index) {
+//        this.index = index;
+//    }
 
     public void setTurn(boolean turn) {
         this.turn = turn;

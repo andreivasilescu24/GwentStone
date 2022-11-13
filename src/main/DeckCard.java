@@ -29,6 +29,14 @@ public class DeckCard {
         this.frozen = false;
     }
 
+    public DeckCard(int mana, String description, ArrayList<String> colors, String name) {
+        this.mana = mana;
+        this.description = description;
+        this.colors = colors;
+        this.name = name;
+        frozen = false;
+    }
+
     public int getMana() {
         return mana;
     }

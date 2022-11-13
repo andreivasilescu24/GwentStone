@@ -10,8 +10,14 @@ public class Minion extends DeckCard {
 
     public Minion(CardInput deck_card) {
         super(deck_card);
-        health = deck_card.getHealth();
-        attackDamage = deck_card.getAttackDamage();
+        this.health = deck_card.getHealth();
+        this.attackDamage = deck_card.getAttackDamage();
+    }
+
+    public Minion(int mana, String description, ArrayList<String> colors, String name, int health, int attackDamage) {
+        super(mana, description, colors, name);
+        this.health = health;
+        this.attackDamage = attackDamage;
     }
 
     public int getHealth() {

@@ -81,7 +81,7 @@ public final class Main {
 
         ActionsInput actionsInput;
         CardInput cardInput;
-        Coordinates coordinates;
+        Coordinates coordinates = new Coordinates();
         DecksInput decksInput;
         GameInput gameInput;
         Input input;
@@ -160,54 +160,74 @@ public final class Main {
         for(ActionsInput action : actions) {
             actual_action = action.getCommand();
             if(actual_action.equals("getPlayerDeck")) {
-                if (action.getPlayerIdx() == 1) {
-//                    card_caster.cast_cards(player1_deck, player1);
+                if (action.getPlayerIdx() == 1)
                     actionInterpretor.getPlayerDeck(output, player1, action);
-                } else {
-//                    card_caster.cast_cards(player2_deck, player2);
+                else
                     actionInterpretor.getPlayerDeck(output, player2, action);
                 }
-            }
+
             else if(actual_action.equals("getPlayerHero")) {
-                if (action.getPlayerIdx() == 1) {
-//                    card_caster.cast_hero(player1_hero, player1);
+                if (action.getPlayerIdx() == 1)
                     actionInterpretor.getPlayerHero(output, player1, action);
-                }
-                else{
-//                    card_caster.cast_hero(player2_hero, player2);
+                else
                     actionInterpretor.getPlayerHero(output, player2, action);
-                }
             }
 
-                else if(actual_action.equals("getPlayerTurn"))
-                    actionInterpretor.getPlayerTurn(output, player1, player2, action);
-                    else if(actual_action.equals("endPlayerTurn")) {
-                        end_player_turn_counter++;
-                        actionInterpretor.endPlayerTurn(player1, player2, end_player_turn_counter);
-                    }
-                        else if(actual_action.equals("placeCard")) {
-                            int turn = actionInterpretor.checkPlayerTurn(player1, player2);
-                            if(turn != 0)
-                                if(turn == 1)
-                                    actionInterpretor.placeCard(table, player1, action, turn);
-                                else actionInterpretor.placeCard(table, player2, action, turn);
-                        }
-                            else if(actual_action.equals("getCardsInHand")) {
-                                    if(action.getPlayerIdx() == 1)
-                                        actionInterpretor.getCardsInHand(output, player1, action);
-                                    else actionInterpretor.getCardsInHand(output, player2, action);
-                            }
-                                else if(actual_action.equals("getPlayerMana")) {
-                                    if(action.getPlayerIdx() == 1)
-                                        actionInterpretor.getPlayerMana(output, player1, action);
-                                    else actionInterpretor.getPlayerMana(output, player2, action);
-                                }
-                                    else if(actual_action.equals("getCardsOnTable")) {
-                                        actionInterpretor.getCardsOnTable(output, table, action);
-                                    }
+            else if(actual_action.equals("getPlayerTurn"))
+                actionInterpretor.getPlayerTurn(output, player1, player2, action);
+
+            else if(actual_action.equals("endPlayerTurn")) {
+                end_player_turn_counter++;
+                actionInterpretor.endPlayerTurn(player1, player2, end_player_turn_counter);
+            }
+
+            else if(actual_action.equals("placeCard")) {
+                int turn = actionInterpretor.checkPlayerTurn(player1, player2);
+                if(turn != 0)
+                    if(turn == 1)
+                        actionInterpretor.placeCard(output, table, player1, action, turn);
+                    else actionInterpretor.placeCard(output, table, player2, action, turn);
+            }
+
+            else if(actual_action.equals("getCardsInHand")) {
+                if(action.getPlayerIdx() == 1)
+                    actionInterpretor.getCardsInHand(output, player1, action);
+                else actionInterpretor.getCardsInHand(output, player2, action);
+            }
+
+            else if(actual_action.equals("getPlayerMana")) {
+                if(action.getPlayerIdx() == 1)
+                    actionInterpretor.getPlayerMana(output, player1, action);
+                else actionInterpretor.getPlayerMana(output, player2, action);
+            }
+
+            else if(actual_action.equals("getCardsOnTable")) {
+                actionInterpretor.getCardsOnTable(output, table, action);
+            }
+
+            else if(actual_action.equals("getCardAtPosition")) {
+                coordinates.setX(action.getX());
+                coordinates.setY(action.getY());
+                actionInterpretor.getCardAtPosition(output, coordinates, table, action);
+            }
+
+            else if(actual_action.equals("getEnvironmentCardsInHand")) {
+                if(action.getPlayerIdx() == 1)
+                    actionInterpretor.getEnvironmentCardsInHand(output, player1, action);
+                else actionInterpretor.getEnvironmentCardsInHand(output, player2, action);
+            }
+
+            else if(actual_action.equals("useEnvironmentCard")) {
+                int turn = actionInterpretor.checkPlayerTurn(player1, player2);
+                if(turn != 0)
+                    if(turn == 1)
+                        actionInterpretor.useEnvironmentCard(output, table, player1, action, turn);
+                    else actionInterpretor.useEnvironmentCard(output, table, player2, action, turn);
+            }
+
         }
 
-//        System.out.println("---------------------\n");
+//        System.out.println("***********");
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(filePath2), output);
