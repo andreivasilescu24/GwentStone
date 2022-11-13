@@ -74,17 +74,22 @@ public class ActionInterpretor {
                 player2.setTurn(true);
 
                 if(table.getTable_cards().size() != 0)
-                    for(int index = 2; index < 4; index++)
-                        for (DeckCard aux_card : table.getTable_cards().get(index))
+                    for (int index = 2; index < 4; index++)
+                        for (DeckCard aux_card : table.getTable_cards().get(index)){
+//                            System.out.println("aici");
+//                            System.out.println(aux_card.getName() + " " + aux_card.isFrozen());
                             aux_card.setFrozen(false);
+                    }
+
             } else {
                 player2.setTurn(false);
                 player1.setTurn(true);
 
                 if(table.getTable_cards().size() != 0)
-                    for(int index = 0; index < 2; index++)
+                    for (int index = 0; index < 2; index++)
                         for (DeckCard aux_card : table.getTable_cards().get(index))
                             aux_card.setFrozen(false);
+
             }
         }
 
@@ -306,7 +311,7 @@ public class ActionInterpretor {
                     if(check_existsTank(table.getTable_cards().get(x_attacked)) && checkTank(card_attacked) || !check_existsTank(table.getTable_cards().get(x_attacked))) {
                         Minion new_card_attacked = new Minion(card_attacked.getMana(), card_attacked.getDescription(),
                                 card_attacked.getColors(), card_attacked.getName(), ((Minion) card_attacked).getHealth(),
-                                ((Minion) card_attacked).getAttackDamage());
+                                ((Minion) card_attacked).getAttackDamage(), card_attacked.isFrozen(), card_attacked.isHas_attacked());
                         new_card_attacked.setHealth(new_card_attacked.getHealth() - ((Minion) card_attacker).getAttackDamage());
                         new_card_attacked.setHas_attacked(true);
 //                        System.out.println(new_card_attacked.getName() + " " + new_card_attacked.getHealth() + " "

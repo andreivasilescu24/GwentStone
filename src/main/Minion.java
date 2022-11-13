@@ -14,8 +14,8 @@ public class Minion extends DeckCard {
         this.attackDamage = deck_card.getAttackDamage();
     }
 
-    public Minion(int mana, String description, ArrayList<String> colors, String name, int health, int attackDamage) {
-        super(mana, description, colors, name);
+    public Minion(int mana, String description, ArrayList<String> colors, String name, int health, int attackDamage, boolean frozen, boolean has_attacked) {
+        super(mana, description, colors, name, frozen, has_attacked);
         this.health = health;
         this.attackDamage = attackDamage;
     }

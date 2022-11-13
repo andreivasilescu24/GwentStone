@@ -10,7 +10,7 @@ public class DeckCard {
     private String description;
     private ArrayList<String> colors;
     private String name;
-//    @JsonIgnore
+    @JsonIgnore
     private boolean frozen;
     @JsonIgnore
     private boolean has_attacked;
@@ -40,13 +40,13 @@ public class DeckCard {
         this.has_attacked = false;
     }
 
-    public DeckCard(int mana, String description, ArrayList<String> colors, String name) {
+    public DeckCard(int mana, String description, ArrayList<String> colors, String name, boolean frozen, boolean has_attacked) {
         this.mana = mana;
         this.description = description;
         this.colors = colors;
         this.name = name;
-        this.frozen = false;
-        this.has_attacked = false;
+        this.frozen = frozen;
+        this.has_attacked = has_attacked;
     }
 
     public int getMana() {

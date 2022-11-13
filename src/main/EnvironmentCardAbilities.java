@@ -39,7 +39,10 @@ public class EnvironmentCardAbilities {
                                 ((Minion)aux_card).getAttackDamage());
                         aux_card.setFrozen(true);
                         System.out.println(aux_card.isFrozen());
-                }
+                    }
+
+//                    for (DeckCard aux_card : table.getTable_cards().get(action.getAffectedRow()))
+//                        System.out.println(aux_card.getName() + " " + aux_card.isFrozen());
 //                    for(DeckCard aux_card : copy_of_row)
 //                        aux_card.setFrozen(true);
 //
@@ -59,7 +62,8 @@ public class EnvironmentCardAbilities {
             for (DeckCard aux_card : table.getTable_cards().get(action.getAffectedRow())) {
                 aux_minion = new Minion(aux_card.getMana(), aux_card.getDescription(),
                         aux_card.getColors(), aux_card.getName(), ((Minion) aux_card).getHealth(),
-                        ((Minion) aux_card).getAttackDamage());
+                        ((Minion) aux_card).getAttackDamage(), aux_card.isFrozen(), aux_card.isHas_attacked());
+
                 aux_minion.setHealth(aux_minion.getHealth() - 1);
 
                 copy_of_row.add(aux_minion);
@@ -95,7 +99,7 @@ public class EnvironmentCardAbilities {
                 max_health = aux_health;
                 card_to_add = new Minion(aux_card.getMana(), aux_card.getDescription(),
                         aux_card.getColors(), aux_card.getName(), ((Minion)aux_card).getHealth(),
-                        ((Minion)aux_card).getAttackDamage());
+                        ((Minion)aux_card).getAttackDamage(), aux_card.isFrozen(), aux_card.isHas_attacked());
                 index = table.getTable_cards().get(action.getAffectedRow()).indexOf(aux_card);
             }
         }
