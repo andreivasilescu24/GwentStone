@@ -10,8 +10,18 @@ public class DeckCard {
     private String description;
     private ArrayList<String> colors;
     private String name;
-    @JsonIgnore
+//    @JsonIgnore
     private boolean frozen;
+    @JsonIgnore
+    private boolean has_attacked;
+
+    public void setHas_attacked(boolean has_attacked) {
+        this.has_attacked = has_attacked;
+    }
+
+    public boolean isHas_attacked() {
+        return has_attacked;
+    }
 
     public boolean isFrozen() {
         return frozen;
@@ -27,6 +37,7 @@ public class DeckCard {
         this.colors = deckCard.getColors();
         this.name = deckCard.getName();
         this.frozen = false;
+        this.has_attacked = false;
     }
 
     public DeckCard(int mana, String description, ArrayList<String> colors, String name) {
@@ -34,7 +45,8 @@ public class DeckCard {
         this.description = description;
         this.colors = colors;
         this.name = name;
-        frozen = false;
+        this.frozen = false;
+        this.has_attacked = false;
     }
 
     public int getMana() {

@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 public class EnvironmentCardAbilities {
     public void checkType(ArrayNode output, DeckCard my_env_card, Table table, Player player, ActionsInput action) {
-        if(my_env_card.getName().equals("Winterfell"))
+        if(my_env_card.getName().equals("Winterfell")) {
             Winterfell(my_env_card, table, player, action);
+        }
         else if(my_env_card.getName().equals("Firestorm"))
             Firestorm(my_env_card, table, player, action);
         else if(my_env_card.getName().equals("Heart Hound")) {
@@ -25,20 +26,25 @@ public class EnvironmentCardAbilities {
 
     //TODO: Make this method without references (similar to Firestorm)
     public void Winterfell(DeckCard my_env_card, Table table, Player player, ActionsInput action) {
-            if(action.getAffectedRow() >= 0 && action.getAffectedRow() < table.getTable_cards().size()) {
-                    Minion aux_minion = null;
-                    ArrayList<DeckCard> copy_of_row = new ArrayList<>();
+            if(action.getAffectedRow() >= 0) {
+//                    Minion aux_minion = null;
+//                    ArrayList<DeckCard> copy_of_row = new ArrayList<>();
                     for (DeckCard aux_card : table.getTable_cards().get(action.getAffectedRow())) {
-                        aux_minion = new Minion(aux_card.getMana(), aux_card.getDescription(),
-                                aux_card.getColors(), aux_card.getName(), ((Minion) aux_card).getHealth(),
-                                ((Minion) aux_card).getAttackDamage());
-                        aux_minion.setFrozen(true);
-
-                        copy_of_row.add(aux_minion);
+//                        aux_minion = new Minion(aux_card.getMana(), aux_card.getDescription(),
+//                                aux_card.getColors(), aux_card.getName(), ((Minion) aux_card).getHealth(),
+//                                ((Minion) aux_card).getAttackDamage());
+//                        aux_minion.setFrozen(true);
+                        System.out.println("*** " + aux_card.isFrozen());
+                        System.out.println("am setat frozen " + aux_card.getName() + aux_card.getMana() + ((Minion)aux_card).getHealth() +
+                                ((Minion)aux_card).getAttackDamage());
+                        aux_card.setFrozen(true);
+                        System.out.println(aux_card.isFrozen());
                 }
-
-                    table.getTable_cards().get(action.getAffectedRow()).clear();
-                    table.getTable_cards().get(action.getAffectedRow()).addAll(copy_of_row);
+//                    for(DeckCard aux_card : copy_of_row)
+//                        aux_card.setFrozen(true);
+//
+//                    table.getTable_cards().get(action.getAffectedRow()).clear();
+//                    table.getTable_cards().get(action.getAffectedRow()).addAll(copy_of_row);
 
             }
              player.setMana(player.getMana() - my_env_card.getMana());

@@ -178,7 +178,7 @@ public final class Main {
 
             else if(actual_action.equals("endPlayerTurn")) {
                 end_player_turn_counter++;
-                actionInterpretor.endPlayerTurn(player1, player2, end_player_turn_counter);
+                actionInterpretor.endPlayerTurn(table, player1, player2, end_player_turn_counter);
             }
 
             else if(actual_action.equals("placeCard")) {
@@ -228,7 +228,20 @@ public final class Main {
             else if(actual_action.equals("getFrozenCardsOnTable"))
                     actionInterpretor.getFrozenCardsOnTable(output, table, action);
 
+            else if(actual_action.equals("cardUsesAttack")) {
+                int turn = actionInterpretor.checkPlayerTurn(player1, player2);
+
+                Coordinates coordinates_attacker = new Coordinates();
+                Coordinates coordinates_attacked = new Coordinates();
+                coordinates_attacker.setX(action.getCardAttacker().getX());
+                coordinates_attacker.setY(action.getCardAttacker().getY());
+                coordinates_attacked.setX(action.getCardAttacked().getX());
+                coordinates_attacked.setY(action.getCardAttacked().getY());
+
+                actionInterpretor.cardUsesAttack(output, table, action, coordinates_attacker, coordinates_attacked, turn);
+            }
         }
+        System.out.println("******");
 
 //        System.out.println("***********");
 

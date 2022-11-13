@@ -39,7 +39,7 @@ public class ActionInterpretor {
 
     }
 
-    public void start_new_round(Player player1, Player player2) {
+    public void start_new_round(Table table, Player player1, Player player2) {
         player1.setRound(player1.getRound() + 1);
         player2.setRound(player2.getRound() + 1);
 
@@ -61,21 +61,35 @@ public class ActionInterpretor {
             player2.getDeckCards().remove(0);
         }
 
+        for(ArrayList<DeckCard> table_row_aux : table.getTable_cards())
+            for(DeckCard aux_card : table_row_aux)
+                aux_card.setHas_attacked(false);
+
     }
 
-    public void endPlayerTurn(Player player1, Player player2, int end_player_turn_counter) {
+    public void endPlayerTurn(Table table, Player player1, Player player2, int end_player_turn_counter) {
         if (checkPlayerTurn(player1, player2) != 0) {
             if (checkPlayerTurn(player1, player2) == 1) {
                 player1.setTurn(false);
                 player2.setTurn(true);
+
+                if(table.getTable_cards().size() != 0)
+                    for(int index = 2; index < 4; index++)
+                        for (DeckCard aux_card : table.getTable_cards().get(index))
+                            aux_card.setFrozen(false);
             } else {
                 player2.setTurn(false);
                 player1.setTurn(true);
+
+                if(table.getTable_cards().size() != 0)
+                    for(int index = 0; index < 2; index++)
+                        for (DeckCard aux_card : table.getTable_cards().get(index))
+                            aux_card.setFrozen(false);
             }
         }
 
         if (end_player_turn_counter % 2 == 0)
-            start_new_round(player1, player2);
+            start_new_round(table, player1, player2);
 
     }
 
@@ -167,19 +181,27 @@ public class ActionInterpretor {
         output.addObject().put("command", action.getCommand()).putPOJO("output", table.getTable_cards());
     }
 
+    public DeckCard getCardAtPosition_helper(Coordinates coordinates, Table table) {
+        if (coordinates.getX() == 0 && coordinates.getY() < table.getBackRow_player2().size())
+            return table.getBackRow_player2().get(coordinates.getY());
+        else if (coordinates.getX() == 1 && coordinates.getY() < table.getFrontRow_player2().size())
+            return table.getFrontRow_player2().get(coordinates.getY());
+        else if (coordinates.getX() == 2 && coordinates.getY() < table.getFrontRow_player1().size())
+            return table.getFrontRow_player1().get(coordinates.getY());
+        else if (coordinates.getX() == 3 && coordinates.getY() < table.getBackRow_player1().size())
+            return table.getBackRow_player1().get(coordinates.getY());
+
+        return null;
+    }
+
+
     public void getCardAtPosition(ArrayNode output, Coordinates coordinates, Table table, ActionsInput action) {
-        DeckCard output_card = null;
-
-        if (coordinates.getX() == 0)
-            output_card = table.getBackRow_player2().get(coordinates.getY());
-        else if (coordinates.getX() == 1)
-            output_card = table.getFrontRow_player2().get(coordinates.getY());
-        else if (coordinates.getX() == 2)
-            output_card = table.getFrontRow_player1().get(coordinates.getY());
-        else if (coordinates.getX() == 3)
-            output_card = table.getBackRow_player1().get(coordinates.getY());
-
-        output.addObject().put("command", action.getCommand()).putPOJO("output", output_card);
+        DeckCard output_card = getCardAtPosition_helper(coordinates, table);
+        if(output_card != null)
+            output.addObject().put("command", action.getCommand()).put("x", coordinates.getX()).
+                put("y", coordinates.getY()).putPOJO("output", output_card);
+        else output.addObject().put("command", action.getCommand()).put("x", coordinates.getX()).
+                put("y", coordinates.getY()).putPOJO("error", "No card available at that position.");
 
     }
 
@@ -258,7 +280,67 @@ public class ActionInterpretor {
 
     }
 
+    public boolean checkTank(DeckCard card) {
+        if(card.getName().equals("Goliath") || card.getName().equals("Warden"))
+            return true;
+        return false;
+    }
+    public boolean check_existsTank(ArrayList<DeckCard> table_row) {
+        for(DeckCard aux_card : table_row)
+            if(checkTank(aux_card))
+                return true;
+        return false;
+    }
+    public void cardUsesAttack(ArrayNode output, Table table, ActionsInput action, Coordinates coordinates_attacker, Coordinates coordinates_attacked, int turn) {
+        int x_attacker = coordinates_attacker.getX();
+        int y_attacker = coordinates_attacker.getY();
+        int x_attacked = coordinates_attacked.getX();
+        int y_attacked = coordinates_attacked.getY();
 
+        DeckCard card_attacker = getCardAtPosition_helper(coordinates_attacker, table);
+        DeckCard card_attacked = getCardAtPosition_helper(coordinates_attacked, table);
 
+        if ((turn == 1 && (x_attacked == 0 || x_attacked == 1)) || (turn == 2 && (x_attacked == 2 || x_attacked == 3))) {
+            if (!card_attacker.isHas_attacked()) {
+                if (!card_attacker.isFrozen()) {
+                    if(check_existsTank(table.getTable_cards().get(x_attacked)) && checkTank(card_attacked) || !check_existsTank(table.getTable_cards().get(x_attacked))) {
+                        Minion new_card_attacked = new Minion(card_attacked.getMana(), card_attacked.getDescription(),
+                                card_attacked.getColors(), card_attacked.getName(), ((Minion) card_attacked).getHealth(),
+                                ((Minion) card_attacked).getAttackDamage());
+                        new_card_attacked.setHealth(new_card_attacked.getHealth() - ((Minion) card_attacker).getAttackDamage());
+                        new_card_attacked.setHas_attacked(true);
+//                        System.out.println(new_card_attacked.getName() + " " + new_card_attacked.getHealth() + " "
+//                        +card_attacker.getName() + ((Minion)card_attacker).getAttackDamage());
+
+                        table.getTable_cards().get(x_attacked).set(y_attacked, new_card_attacked);
+
+                        if(((Minion)table.getTable_cards().get(x_attacked).get(y_attacked)).getHealth() <= 0)
+                            table.getTable_cards().get(x_attacked).remove(y_attacked);
+
+                    } else {
+                        output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker)
+                                .putPOJO("cardAttacked", coordinates_attacked).
+                                put("error", "Attacked card is not of type 'Tank'.");
+                        return;
+                    }
+
+                } else {
+                    output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker)
+                            .putPOJO("cardAttacked", coordinates_attacked).put("error", "Attacker card is frozen.");
+                    return;
+                }
+            } else {
+                output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker)
+                        .putPOJO("cardAttacked", coordinates_attacked).put("error", "Attacker card has already attacked this turn.");
+                return;
+            }
+        } else {
+            output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker)
+                    .putPOJO("cardAttacked", coordinates_attacked).put("error", "Attacked card does not belong to the enemy.");
+            return;
+        }
+
+    }
 }
+
 
