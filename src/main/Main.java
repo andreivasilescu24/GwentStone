@@ -225,6 +225,9 @@ public final class Main {
                     else actionInterpretor.useEnvironmentCard(output, table, player2, action, turn);
             }
 
+            else if(actual_action.equals("getFrozenCardsOnTable"))
+                    actionInterpretor.getFrozenCardsOnTable(output, table, action);
+
         }
 
 //        System.out.println("***********");

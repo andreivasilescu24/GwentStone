@@ -26,9 +26,20 @@ public class EnvironmentCardAbilities {
     //TODO: Make this method without references (similar to Firestorm)
     public void Winterfell(DeckCard my_env_card, Table table, Player player, ActionsInput action) {
             if(action.getAffectedRow() >= 0 && action.getAffectedRow() < table.getTable_cards().size()) {
-                for (DeckCard aux_card : table.getTable_cards().get(action.getAffectedRow())) {
-                    aux_card.setFrozen(true);
+                    Minion aux_minion = null;
+                    ArrayList<DeckCard> copy_of_row = new ArrayList<>();
+                    for (DeckCard aux_card : table.getTable_cards().get(action.getAffectedRow())) {
+                        aux_minion = new Minion(aux_card.getMana(), aux_card.getDescription(),
+                                aux_card.getColors(), aux_card.getName(), ((Minion) aux_card).getHealth(),
+                                ((Minion) aux_card).getAttackDamage());
+                        aux_minion.setFrozen(true);
+
+                        copy_of_row.add(aux_minion);
                 }
+
+                    table.getTable_cards().get(action.getAffectedRow()).clear();
+                    table.getTable_cards().get(action.getAffectedRow()).addAll(copy_of_row);
+
             }
              player.setMana(player.getMana() - my_env_card.getMana());
              player.getHandCards().remove(action.getHandIdx());
@@ -61,16 +72,6 @@ public class EnvironmentCardAbilities {
                 index++;
             }
 
-//            table.getTable_cards().get(action.getAffectedRow()).remove(1);
-//            table.getTable_cards().get(action.getAffectedRow()).remove(1);
-
-
-
-
-//            for (DeckCard aux_card : table.getTable_cards().get(action.getAffectedRow())) {
-//                if(((Minion)aux_card).getHealth() == 0)
-//                    table.getTable_cards().get(action.getAffectedRow());
-//            }
             player.setMana(player.getMana() - my_env_card.getMana());
             player.getHandCards().remove(action.getHandIdx());
 

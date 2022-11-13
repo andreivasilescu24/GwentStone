@@ -196,7 +196,7 @@ public class ActionInterpretor {
     public void useEnvironmentCard(ArrayNode output, Table table, Player player, ActionsInput action, int turn) {
         DeckCard my_env_card = player.getHandCards().get(action.getHandIdx());
         String my_env_card_name = my_env_card.getName();
-        System.out.println(my_env_card_name);
+//        System.out.println(my_env_card_name);
         if (my_env_card_name.equals("Firestorm") || my_env_card_name.equals("Winterfell") || my_env_card_name.equals("Heart Hound")) {
             if(my_env_card.getMana() <= player.getMana()) {
                 if(turn == 1) {
@@ -245,6 +245,19 @@ public class ActionInterpretor {
 
 
     }
+
+    public void getFrozenCardsOnTable(ArrayNode output, Table table, ActionsInput action) {
+        ArrayList<DeckCard> frozenCardsAux = new ArrayList<>();
+        for(ArrayList<DeckCard> row_array_list : table.getTable_cards())
+            for (DeckCard aux_card : row_array_list) {
+                if(aux_card.isFrozen())
+                    frozenCardsAux.add(aux_card);
+            }
+
+        output.addObject().put("command", action.getCommand()).putPOJO("output",frozenCardsAux);
+
+    }
+
 
 
 }
