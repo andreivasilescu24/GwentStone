@@ -27,7 +27,10 @@ public class ActionInterpretor {
     }
 
     public void getPlayerHero(ArrayNode output, Player player, ActionsInput action) {
-        output.addObject().put("command", action.getCommand()).put("playerIdx", action.getPlayerIdx()).putPOJO("output", player.getHero());
+        Hero player_hero = player.getHero();
+        Hero aux_hero = new Hero(player_hero.getMana(), player_hero.getDescription(), player_hero.getColors(), player_hero.getName(), player_hero.isFrozen(),
+                player_hero.isHas_attacked(), player_hero.getHealth());
+        output.addObject().put("command", action.getCommand()).put("playerIdx", action.getPlayerIdx()).putPOJO("output", aux_hero);
     }
 
     public void getPlayerTurn(ArrayNode output, Player player1, Player player2, ActionsInput action) {
@@ -68,7 +71,7 @@ public class ActionInterpretor {
     }
 
     public void endPlayerTurn(Table table, Player player1, Player player2, int end_player_turn_counter) {
-        if (checkPlayerTurn(player1, player2) != 0) {
+        if (checkPlayerTurn(player1, player2) != 0 && !player1.isHeroKilled() && !player2.isHeroKilled()) {
             if (checkPlayerTurn(player1, player2) == 1) {
                 player1.setTurn(false);
                 player2.setTurn(true);
@@ -76,11 +79,10 @@ public class ActionInterpretor {
                 if (table.getTable_cards().size() != 0)
                     for (int index = 2; index < 4; index++)
                         for (DeckCard aux_card : table.getTable_cards().get(index)) {
-//                            System.out.println("aici");
-//                            System.out.println(aux_card.getName() + " " + aux_card.isFrozen());
                             aux_card.setHas_attacked(false);
                             aux_card.setFrozen(false);
                         }
+                player1.getHero().setHas_attacked(false);
 
             } else {
                 player2.setTurn(false);
@@ -92,11 +94,12 @@ public class ActionInterpretor {
                             aux_card.setHas_attacked(false);
                             aux_card.setFrozen(false);
                         }
+                player2.getHero().setHas_attacked(false);
             }
-        }
 
-        if (end_player_turn_counter % 2 == 0)
-            start_new_round(table, player1, player2);
+            if (end_player_turn_counter % 2 == 0)
+                start_new_round(table, player1, player2);
+        }
 
     }
 
@@ -406,6 +409,58 @@ public class ActionInterpretor {
 
 
     }
+
+public void useAttackHero(ArrayNode output, Coordinates coordinates_attacker, ActionsInput action, Player player, DeckCard card_attacker, Table table, int turn) {
+    int x_attacker = coordinates_attacker.getX();
+    int y_attacker = coordinates_attacker.getX();
+
+    if(!card_attacker.isFrozen()) {
+        if(!card_attacker.isHas_attacked()) {
+            if(!check_existsTank(table, turn)) {
+                Hero attacked_hero = player.getHero();
+                attacked_hero.setHealth(attacked_hero.getHealth() - ((Minion)card_attacker).getAttackDamage());
+
+                card_attacker.setHas_attacked(true);
+
+                if(attacked_hero.getHealth() <= 0) {
+                    player.setHeroKilled(true);
+                    if(turn == 1)
+                        output.addObject().put("gameEnded", "Player one killed the enemy hero.");
+                    else output.addObject().put("gameEnded", "Player two killed the enemy hero.");
+                }
+            }
+
+            else {
+                output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker).
+                        put("error", "Attacked card is not of type 'Tank'.");
+                return;
+            }
+
+        }
+
+        else {
+            output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker).
+                    put("error", "Attacker card has already attacked this turn.");
+            return;
+        }
+    }
+
+    else {
+        output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker).
+                put("error", "Attacker card is frozen.");
+        return;
+    }
+
+
+
+    }
+
+    public void useHeroAbility(ArrayNode output, ActionsInput action, Table table, int turn) {
+
+    }
+
+
+
 }
 
 

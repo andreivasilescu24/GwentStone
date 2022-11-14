@@ -8,9 +8,19 @@ public class Player {
     private ArrayList<DeckCard> handCards = new ArrayList<>();
     private ArrayList<DeckCard> deckCards = new ArrayList<>();
 
+    private boolean isHeroKilled;
     private int round;
     private Hero hero;
-//    private int index;
+
+    public boolean isHeroKilled() {
+        return isHeroKilled;
+    }
+
+    public void setHeroKilled(boolean heroKilled) {
+        isHeroKilled = heroKilled;
+    }
+
+    //    private int index;
     private boolean turn;
 
     public void setRound(int round) {

@@ -17,11 +17,13 @@ public class MinionCardAbilities {
 
     public void Weak_Knees(DeckCard card_attacker, DeckCard card_attacked, Table table, Coordinates coordinates_attacked, Coordinates coordinates_attacker) {
         ((Minion)card_attacked).setAttackDamage(((Minion)card_attacked).getAttackDamage() - 2);
+        if(((Minion)card_attacked).getAttackDamage() < 0)
+            ((Minion)card_attacked).setAttackDamage(0);
+
         card_attacker.setHas_attacked(true);
     }
 
     public void Skyjack(DeckCard card_attacker, DeckCard card_attacked, Table table, Coordinates coordinates_attacked, Coordinates coordinates_attacker) {
-        System.out.println("MIRAJ");
         int health_attacker = ((Minion)card_attacker).getHealth();
         int health_attacked = ((Minion)card_attacked).getHealth();
 

@@ -26,7 +26,7 @@ public class CardTypeCaster {
     }
 
     public void cast_hero(CardInput hero, Player player) {
-        Hero new_environment_card = new Hero(hero);
-        player.setHero(new_environment_card);
+        Hero new_hero_card = new Hero(hero);
+        player.setHero(new_hero_card);
     }
 }
