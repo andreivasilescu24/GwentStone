@@ -78,6 +78,7 @@ public class ActionInterpretor {
                         for (DeckCard aux_card : table.getTable_cards().get(index)){
 //                            System.out.println("aici");
 //                            System.out.println(aux_card.getName() + " " + aux_card.isFrozen());
+                            aux_card.setHas_attacked(false);
                             aux_card.setFrozen(false);
                     }
 
@@ -87,9 +88,10 @@ public class ActionInterpretor {
 
                 if(table.getTable_cards().size() != 0)
                     for (int index = 0; index < 2; index++)
-                        for (DeckCard aux_card : table.getTable_cards().get(index))
+                        for (DeckCard aux_card : table.getTable_cards().get(index)) {
+                            aux_card.setHas_attacked(false);
                             aux_card.setFrozen(false);
-
+                        }
             }
         }
 
@@ -206,7 +208,7 @@ public class ActionInterpretor {
             output.addObject().put("command", action.getCommand()).put("x", coordinates.getX()).
                 put("y", coordinates.getY()).putPOJO("output", output_card);
         else output.addObject().put("command", action.getCommand()).put("x", coordinates.getX()).
-                put("y", coordinates.getY()).putPOJO("error", "No card available at that position.");
+                put("y", coordinates.getY()).putPOJO("output", "No card available at that position.");
 
     }
 
@@ -290,11 +292,22 @@ public class ActionInterpretor {
             return true;
         return false;
     }
-    public boolean check_existsTank(ArrayList<DeckCard> table_row) {
-        for(DeckCard aux_card : table_row)
-            if(checkTank(aux_card))
-                return true;
-        return false;
+    public boolean check_existsTank(Table table, int turn) {
+        if (turn == 1) {
+            for(int index = 0; index < 2; index++)
+                for(DeckCard aux_card : table.getTable_cards().get(index))
+                    if(checkTank(aux_card))
+                        return true;
+            return false;
+        }
+
+        else {
+            for(int index = 2; index < 4; index++)
+                for(DeckCard aux_card : table.getTable_cards().get(index))
+                    if(checkTank(aux_card))
+                        return true;
+            return false;
+        }
     }
     public void cardUsesAttack(ArrayNode output, Table table, ActionsInput action, Coordinates coordinates_attacker, Coordinates coordinates_attacked, int turn) {
         int x_attacker = coordinates_attacker.getX();
@@ -308,12 +321,13 @@ public class ActionInterpretor {
         if ((turn == 1 && (x_attacked == 0 || x_attacked == 1)) || (turn == 2 && (x_attacked == 2 || x_attacked == 3))) {
             if (!card_attacker.isHas_attacked()) {
                 if (!card_attacker.isFrozen()) {
-                    if(check_existsTank(table.getTable_cards().get(x_attacked)) && checkTank(card_attacked) || !check_existsTank(table.getTable_cards().get(x_attacked))) {
+                    if(check_existsTank(table, turn) && checkTank(card_attacked) || !check_existsTank(table, turn)) {
                         Minion new_card_attacked = new Minion(card_attacked.getMana(), card_attacked.getDescription(),
                                 card_attacked.getColors(), card_attacked.getName(), ((Minion) card_attacked).getHealth(),
                                 ((Minion) card_attacked).getAttackDamage(), card_attacked.isFrozen(), card_attacked.isHas_attacked());
                         new_card_attacked.setHealth(new_card_attacked.getHealth() - ((Minion) card_attacker).getAttackDamage());
-                        new_card_attacked.setHas_attacked(true);
+
+                        card_attacker.setHas_attacked(true);
 //                        System.out.println(new_card_attacked.getName() + " " + new_card_attacked.getHealth() + " "
 //                        +card_attacker.getName() + ((Minion)card_attacker).getAttackDamage());
 
