@@ -181,7 +181,13 @@ public class ActionInterpretor {
     public void getCardsOnTable(ArrayNode output, Table table, ActionsInput action) {
 //        ArrayList<ArrayList<DeckCard>> aux_table_cards = table.getTable_cards();
 //        Collections.addAll(aux_table_cards, table.getBackRow_player2(), table.getFrontRow_player2(), table.getFrontRow_player1(), table.getBackRow_player1());
-        output.addObject().put("command", action.getCommand()).putPOJO("output", table.getTable_cards());
+        ArrayList<ArrayList<DeckCard>> aux_table_cards = new ArrayList<>();
+//
+        aux_table_cards.addAll(table.getTable_cards());
+//            for (DeckCard aux_card : table.getTable_cards().get(index))
+//                aux_table_cards.get(index).add(aux_card);
+//        }
+        output.addObject().put("command", action.getCommand()).putPOJO("output", aux_table_cards);
     }
 
     public DeckCard getCardAtPosition_helper(Coordinates coordinates, Table table) {

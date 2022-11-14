@@ -34,9 +34,9 @@ public class EnvironmentCardAbilities {
 //                                aux_card.getColors(), aux_card.getName(), ((Minion) aux_card).getHealth(),
 //                                ((Minion) aux_card).getAttackDamage());
 //                        aux_minion.setFrozen(true);
-                        System.out.println("*** " + aux_card.isFrozen());
-                        System.out.println("am setat frozen " + aux_card.getName() + aux_card.getMana() + ((Minion)aux_card).getHealth() +
-                                ((Minion)aux_card).getAttackDamage());
+//                        System.out.println("*** " + aux_card.isFrozen());
+//                        System.out.println("am setat frozen " + aux_card.getName() + aux_card.getMana() + ((Minion)aux_card).getHealth() +
+//                                ((Minion)aux_card).getAttackDamage());
                         aux_card.setFrozen(true);
                         System.out.println(aux_card.isFrozen());
                     }
