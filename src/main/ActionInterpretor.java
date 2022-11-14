@@ -209,9 +209,14 @@ public class ActionInterpretor {
 
     public void getCardAtPosition(ArrayNode output, Coordinates coordinates, Table table, ActionsInput action) {
         DeckCard output_card = getCardAtPosition_helper(coordinates, table);
-        if (output_card != null)
+        if (output_card != null) {
+            DeckCard copy_card = new Minion(output_card.getMana(), output_card.getDescription(), output_card.getColors(),
+                    output_card.getName(), ((Minion)output_card).getHealth(), ((Minion)output_card).getAttackDamage(),
+                    output_card.isFrozen(), output_card.isHas_attacked());
+
             output.addObject().put("command", action.getCommand()).put("x", coordinates.getX()).
-                    put("y", coordinates.getY()).putPOJO("output", output_card);
+                    put("y", coordinates.getY()).putPOJO("output", copy_card);
+        }
         else output.addObject().put("command", action.getCommand()).put("x", coordinates.getX()).
                 put("y", coordinates.getY()).putPOJO("output", "No card available at that position.");
 
@@ -455,7 +460,51 @@ public void useAttackHero(ArrayNode output, Coordinates coordinates_attacker, Ac
 
     }
 
-    public void useHeroAbility(ArrayNode output, ActionsInput action, Table table, int turn) {
+    public void useHeroAbility(ArrayNode output, ActionsInput action, Table table, int turn, Player player) {
+        Hero player_hero = player.getHero();
+        int affected_row = action.getAffectedRow();
+
+        if(player_hero.getMana() <= player.getMana()) {
+            if(!player_hero.isHas_attacked()) {
+                if(player_hero.getName().equals("Lord Royce") || player_hero.getName().equals("Empress Thorina")) {
+                    if((turn == 1 && (affected_row == 0 || affected_row == 1)) || (turn == 2 && (affected_row == 2 || affected_row == 3))) {
+                        HeroCardAbilities heroCardAbilities = new HeroCardAbilities();
+                        heroCardAbilities.checkType(affected_row, table, player);
+                    }
+                    else {
+                        output.addObject().put("command", action.getCommand()).put("affectedRow", affected_row).
+                                put("error", "Selected row does not belong to the enemy.");
+                        return;
+                    }
+                }
+
+                else if(player_hero.getName().equals("General Kocioraw") || player_hero.getName().equals("King Mudface")) {
+                    if((turn == 1 && (affected_row == 2 || affected_row == 3)) || (turn == 2 && (affected_row == 0 || affected_row == 1))) {
+                        HeroCardAbilities heroCardAbilities = new HeroCardAbilities();
+                        heroCardAbilities.checkType(affected_row, table, player);
+                    }
+                    else {
+                        output.addObject().put("command", action.getCommand()).put("affectedRow", affected_row).
+                                put("error", "Selected row does not belong to the current player.");
+                        return;
+                    }
+                }
+
+            }
+
+            else {
+                output.addObject().put("command", action.getCommand()).put("affectedRow", affected_row).
+                        put("error", "Hero has already attacked this turn.");
+                return;
+            }
+
+        }
+
+        else {
+            output.addObject().put("command", action.getCommand()).put("affectedRow", affected_row).
+                    put("error", "Not enough mana to use hero's ability.");
+            return;
+        }
 
     }
 

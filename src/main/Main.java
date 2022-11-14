@@ -249,7 +249,10 @@ public final class Main {
 
             else if(actual_action.equals("useHeroAbility")) {
                 int turn = actionInterpretor.checkPlayerTurn(player1, player2);
-                actionInterpretor.useHeroAbility(output, action, table, turn);
+                if(turn == 1)
+                    actionInterpretor.useHeroAbility(output, action, table, turn, player1);
+                else actionInterpretor.useHeroAbility(output, action, table, turn, player2);
+
             }
         }
 
