@@ -61,8 +61,8 @@ public class ActionInterpretor {
             player2.getDeckCards().remove(0);
         }
 
-        for(ArrayList<DeckCard> table_row_aux : table.getTable_cards())
-            for(DeckCard aux_card : table_row_aux)
+        for (ArrayList<DeckCard> table_row_aux : table.getTable_cards())
+            for (DeckCard aux_card : table_row_aux)
                 aux_card.setHas_attacked(false);
 
     }
@@ -73,20 +73,20 @@ public class ActionInterpretor {
                 player1.setTurn(false);
                 player2.setTurn(true);
 
-                if(table.getTable_cards().size() != 0)
+                if (table.getTable_cards().size() != 0)
                     for (int index = 2; index < 4; index++)
-                        for (DeckCard aux_card : table.getTable_cards().get(index)){
+                        for (DeckCard aux_card : table.getTable_cards().get(index)) {
 //                            System.out.println("aici");
 //                            System.out.println(aux_card.getName() + " " + aux_card.isFrozen());
                             aux_card.setHas_attacked(false);
                             aux_card.setFrozen(false);
-                    }
+                        }
 
             } else {
                 player2.setTurn(false);
                 player1.setTurn(true);
 
-                if(table.getTable_cards().size() != 0)
+                if (table.getTable_cards().size() != 0)
                     for (int index = 0; index < 2; index++)
                         for (DeckCard aux_card : table.getTable_cards().get(index)) {
                             aux_card.setHas_attacked(false);
@@ -112,8 +112,7 @@ public class ActionInterpretor {
                                 table.getFrontRow_player1().add(card_to_place);
                                 table.getTable_cards().removeAll(table.getTable_cards());
                                 Collections.addAll(table.getTable_cards(), table.getBackRow_player2(), table.getFrontRow_player2(), table.getFrontRow_player1(), table.getBackRow_player1());
-                            }
-                            else {
+                            } else {
                                 output.addObject().put("command", action.getCommand()).put("handIdx", action.getHandIdx())
                                         .put("error", "Cannot place card on table since row is full.");
                                 return;
@@ -123,8 +122,7 @@ public class ActionInterpretor {
                                 table.getBackRow_player1().add(card_to_place);
                                 table.getTable_cards().removeAll(table.getTable_cards());
                                 Collections.addAll(table.getTable_cards(), table.getBackRow_player2(), table.getFrontRow_player2(), table.getFrontRow_player1(), table.getBackRow_player1());
-                            }
-                                else {
+                            } else {
                                 output.addObject().put("command", action.getCommand()).put("handIdx", action.getHandIdx())
                                         .put("error", "Cannot place card on table since row is full.");
                                 return;
@@ -137,8 +135,7 @@ public class ActionInterpretor {
                                 table.getFrontRow_player2().add(card_to_place);
                                 table.getTable_cards().removeAll(table.getTable_cards());
                                 Collections.addAll(table.getTable_cards(), table.getBackRow_player2(), table.getFrontRow_player2(), table.getFrontRow_player1(), table.getBackRow_player1());
-                            }
-                            else {
+                            } else {
                                 output.addObject().put("command", action.getCommand()).put("handIdx", action.getHandIdx())
                                         .put("error", "Cannot place card on table since row is full.");
                                 return;
@@ -148,8 +145,7 @@ public class ActionInterpretor {
                                 table.getBackRow_player2().add(card_to_place);
                                 table.getTable_cards().removeAll(table.getTable_cards());
                                 Collections.addAll(table.getTable_cards(), table.getBackRow_player2(), table.getFrontRow_player2(), table.getFrontRow_player1(), table.getBackRow_player1());
-                            }
-                            else {
+                            } else {
                                 output.addObject().put("command", action.getCommand()).put("handIdx", action.getHandIdx())
                                         .put("error", "Cannot place card on table since row is full.");
                                 return;
@@ -204,9 +200,9 @@ public class ActionInterpretor {
 
     public void getCardAtPosition(ArrayNode output, Coordinates coordinates, Table table, ActionsInput action) {
         DeckCard output_card = getCardAtPosition_helper(coordinates, table);
-        if(output_card != null)
+        if (output_card != null)
             output.addObject().put("command", action.getCommand()).put("x", coordinates.getX()).
-                put("y", coordinates.getY()).putPOJO("output", output_card);
+                    put("y", coordinates.getY()).putPOJO("output", output_card);
         else output.addObject().put("command", action.getCommand()).put("x", coordinates.getX()).
                 put("y", coordinates.getY()).putPOJO("output", "No card available at that position.");
 
@@ -227,14 +223,23 @@ public class ActionInterpretor {
         String my_env_card_name = my_env_card.getName();
 //        System.out.println(my_env_card_name);
         if (my_env_card_name.equals("Firestorm") || my_env_card_name.equals("Winterfell") || my_env_card_name.equals("Heart Hound")) {
-            if(my_env_card.getMana() <= player.getMana()) {
-                if(turn == 1) {
-                    if(action.getAffectedRow() == 0 || action.getAffectedRow() == 1) {
+            if (my_env_card.getMana() <= player.getMana()) {
+                if (turn == 1) {
+                    if (action.getAffectedRow() == 0 || action.getAffectedRow() == 1) {
                         EnvironmentCardAbilities my_env_card_ability = new EnvironmentCardAbilities();
                         my_env_card_ability.checkType(output, my_env_card, table, player, action);
+                    } else {
+                        output.addObject().put("command", action.getCommand()).
+                                put("handIdx", action.getHandIdx()).put("affectedRow", action.getAffectedRow())
+                                .put("error", "Chosen row does not belong to the enemy.");
+                        return;
                     }
 
-                    else {
+                } else {
+                    if (action.getAffectedRow() == 2 || action.getAffectedRow() == 3) {
+                        EnvironmentCardAbilities my_env_card_ability = new EnvironmentCardAbilities();
+                        my_env_card_ability.checkType(output, my_env_card, table, player, action);
+                    } else {
                         output.addObject().put("command", action.getCommand()).
                                 put("handIdx", action.getHandIdx()).put("affectedRow", action.getAffectedRow())
                                 .put("error", "Chosen row does not belong to the enemy.");
@@ -242,73 +247,54 @@ public class ActionInterpretor {
                     }
 
                 }
-
-                else {
-                    if(action.getAffectedRow() == 2 || action.getAffectedRow() == 3) {
-                        EnvironmentCardAbilities my_env_card_ability = new EnvironmentCardAbilities();
-                        my_env_card_ability.checkType(output, my_env_card, table, player, action);
-                    }
-
-                    else {
-                        output.addObject().put("command", action.getCommand()).
-                                put("handIdx", action.getHandIdx()).put("affectedRow", action.getAffectedRow())
-                                .put("error", "Chosen row does not belong to the enemy.");
-                        return;
-                    }
-
-                }
-            }
-
-            else {
+            } else {
                 output.addObject().put("command", action.getCommand()).
                         put("handIdx", action.getHandIdx()).put("affectedRow", action.getAffectedRow())
                         .put("error", "Not enough mana to use environment card.");
                 return;
             }
 
-        }
-
-        else output.addObject().put("command", action.getCommand()).
-                    put("handIdx", action.getHandIdx()).put("affectedRow", action.getAffectedRow()).
-                    put("error", "Chosen card is not of type environment.");
+        } else output.addObject().put("command", action.getCommand()).
+                put("handIdx", action.getHandIdx()).put("affectedRow", action.getAffectedRow()).
+                put("error", "Chosen card is not of type environment.");
 
 
     }
 
     public void getFrozenCardsOnTable(ArrayNode output, Table table, ActionsInput action) {
         ArrayList<DeckCard> frozenCardsAux = new ArrayList<>();
-        for(ArrayList<DeckCard> row_array_list : table.getTable_cards())
+        for (ArrayList<DeckCard> row_array_list : table.getTable_cards())
             for (DeckCard aux_card : row_array_list) {
-                if(aux_card.isFrozen())
+                if (aux_card.isFrozen())
                     frozenCardsAux.add(aux_card);
             }
 
-        output.addObject().put("command", action.getCommand()).putPOJO("output",frozenCardsAux);
+        output.addObject().put("command", action.getCommand()).putPOJO("output", frozenCardsAux);
 
     }
 
     public boolean checkTank(DeckCard card) {
-        if(card.getName().equals("Goliath") || card.getName().equals("Warden"))
+        if (card.getName().equals("Goliath") || card.getName().equals("Warden"))
             return true;
         return false;
     }
+
     public boolean check_existsTank(Table table, int turn) {
         if (turn == 1) {
-            for(int index = 0; index < 2; index++)
-                for(DeckCard aux_card : table.getTable_cards().get(index))
-                    if(checkTank(aux_card))
+            for (int index = 0; index < 2; index++)
+                for (DeckCard aux_card : table.getTable_cards().get(index))
+                    if (checkTank(aux_card))
                         return true;
             return false;
-        }
-
-        else {
-            for(int index = 2; index < 4; index++)
-                for(DeckCard aux_card : table.getTable_cards().get(index))
-                    if(checkTank(aux_card))
+        } else {
+            for (int index = 2; index < 4; index++)
+                for (DeckCard aux_card : table.getTable_cards().get(index))
+                    if (checkTank(aux_card))
                         return true;
             return false;
         }
     }
+
     public void cardUsesAttack(ArrayNode output, Table table, ActionsInput action, Coordinates coordinates_attacker, Coordinates coordinates_attacked, int turn) {
         int x_attacker = coordinates_attacker.getX();
         int y_attacker = coordinates_attacker.getY();
@@ -321,7 +307,7 @@ public class ActionInterpretor {
         if ((turn == 1 && (x_attacked == 0 || x_attacked == 1)) || (turn == 2 && (x_attacked == 2 || x_attacked == 3))) {
             if (!card_attacker.isHas_attacked()) {
                 if (!card_attacker.isFrozen()) {
-                    if(check_existsTank(table, turn) && checkTank(card_attacked) || !check_existsTank(table, turn)) {
+                    if (check_existsTank(table, turn) && checkTank(card_attacked) || !check_existsTank(table, turn)) {
                         Minion new_card_attacked = new Minion(card_attacked.getMana(), card_attacked.getDescription(),
                                 card_attacked.getColors(), card_attacked.getName(), ((Minion) card_attacked).getHealth(),
                                 ((Minion) card_attacked).getAttackDamage(), card_attacked.isFrozen(), card_attacked.isHas_attacked());
@@ -333,7 +319,7 @@ public class ActionInterpretor {
 
                         table.getTable_cards().get(x_attacked).set(y_attacked, new_card_attacked);
 
-                        if(((Minion)table.getTable_cards().get(x_attacked).get(y_attacked)).getHealth() <= 0)
+                        if (((Minion) table.getTable_cards().get(x_attacked).get(y_attacked)).getHealth() <= 0)
                             table.getTable_cards().get(x_attacked).remove(y_attacked);
 
                     } else {
@@ -358,6 +344,60 @@ public class ActionInterpretor {
                     .putPOJO("cardAttacked", coordinates_attacked).put("error", "Attacked card does not belong to the enemy.");
             return;
         }
+
+    }
+
+    public void cardUsesAbility(ArrayNode output, Table table, ActionsInput action, Coordinates coordinates_attacker, Coordinates coordinates_attacked, int turn) {
+        int x_attacker = coordinates_attacker.getX();
+        int y_attacker = coordinates_attacker.getY();
+        int x_attacked = coordinates_attacked.getX();
+        int y_attacked = coordinates_attacked.getY();
+
+        DeckCard card_attacker = getCardAtPosition_helper(coordinates_attacker, table);
+        DeckCard card_attacked = getCardAtPosition_helper(coordinates_attacked, table);
+
+        if (!card_attacker.isFrozen()) {
+            if (!card_attacker.isHas_attacked()) {
+                if (card_attacker.getName().equals("Disciple")) {
+                    if ((turn == 1 && (x_attacked == 2 || x_attacked == 3)) || (turn == 2 && (x_attacked == 0 || x_attacked == 1))) {
+                            MinionCardAbilities minionCardAbilities = new MinionCardAbilities();
+                            minionCardAbilities.Gods_Plan(card_attacker, card_attacked, table, coordinates_attacked, coordinates_attacker);
+                    } else {
+                        output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker)
+                                .putPOJO("cardAttacked", coordinates_attacked).put("error", "Attacked card does not belong to the current player.");
+                        return;
+                    }
+                } else if (card_attacker.getName().equals("The Ripper") || card_attacker.getName().equals("Miraj") || card_attacker.getName().equals("The Cursed One")) {
+                    if ((turn == 1 && (x_attacked == 0 || x_attacked == 1)) || (turn == 2 && (x_attacked == 2 || x_attacked == 3))) {
+                        if (check_existsTank(table, turn) && checkTank(card_attacked) || !check_existsTank(table, turn)) {
+                            MinionCardAbilities minionCardAbilities = new MinionCardAbilities();
+                            minionCardAbilities.checkType(card_attacker, card_attacked, table, coordinates_attacked, coordinates_attacker);
+
+                        } else {
+                            output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker)
+                                    .putPOJO("cardAttacked", coordinates_attacked).
+                                    put("error", "Attacked card is not of type 'Tank'.");
+                            return;
+                        }
+                    } else {
+                        output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker)
+                                .putPOJO("cardAttacked", coordinates_attacked).put("error", "Attacked card does not belong to the enemy.");
+                        return;
+                    }
+                }
+            } else {
+                output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker)
+                        .putPOJO("cardAttacked", coordinates_attacked).put("error", "Attacker card has already attacked this turn.");
+                return;
+            }
+
+
+        } else {
+            output.addObject().put("command", action.getCommand()).putPOJO("cardAttacker", coordinates_attacker)
+                    .putPOJO("cardAttacked", coordinates_attacked).put("error", "Attacker card is frozen.");
+            return;
+        }
+
 
     }
 }

@@ -240,6 +240,19 @@ public final class Main {
 
                 actionInterpretor.cardUsesAttack(output, table, action, coordinates_attacker, coordinates_attacked, turn);
             }
+
+            else if(actual_action.equals("cardUsesAbility")) {
+                int turn = actionInterpretor.checkPlayerTurn(player1, player2);
+
+                Coordinates coordinates_attacker = new Coordinates();
+                Coordinates coordinates_attacked = new Coordinates();
+                coordinates_attacker.setX(action.getCardAttacker().getX());
+                coordinates_attacker.setY(action.getCardAttacker().getY());
+                coordinates_attacked.setX(action.getCardAttacked().getX());
+                coordinates_attacked.setY(action.getCardAttacked().getY());
+
+                actionInterpretor.cardUsesAbility(output, table, action, coordinates_attacker, coordinates_attacked, turn);
+            }
         }
         System.out.println("******");
 
