@@ -18,7 +18,6 @@ public class HeroCardAbilities {
     }
 
     public void Sub_Zero(int affected_row, Table table, Player player) {
-        System.out.println("SUB ZERO");
         ArrayList<DeckCard> aux_row = table.getTable_cards().get(affected_row);
         int max_attack = -1;
         int max_index = -1;

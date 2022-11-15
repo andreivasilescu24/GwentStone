@@ -194,16 +194,20 @@ public class ActionInterpretor {
     }
 
     public DeckCard getCardAtPosition_helper(Coordinates coordinates, Table table) {
-        if (coordinates.getX() == 0 && coordinates.getY() < table.getBackRow_player2().size())
+        int x = coordinates.getX();
+        int y = coordinates.getY();
+
+        if (x == 0 && x < table.getTable_cards().size() && y < table.getTable_cards().get(x).size())
             return table.getBackRow_player2().get(coordinates.getY());
-        else if (coordinates.getX() == 1 && coordinates.getY() < table.getFrontRow_player2().size())
+        else if (x == 1 && x < table.getTable_cards().size() && y < table.getTable_cards().get(x).size())
             return table.getFrontRow_player2().get(coordinates.getY());
-        else if (coordinates.getX() == 2 && coordinates.getY() < table.getFrontRow_player1().size())
+        else if (x == 2 && x < table.getTable_cards().size() && y < table.getTable_cards().get(x).size())
             return table.getFrontRow_player1().get(coordinates.getY());
-        else if (coordinates.getX() == 3 && coordinates.getY() < table.getBackRow_player1().size())
+        else if (x == 3 && x < table.getTable_cards().size() && y < table.getTable_cards().get(x).size())
             return table.getBackRow_player1().get(coordinates.getY());
 
         return null;
+
     }
 
 
@@ -319,7 +323,7 @@ public class ActionInterpretor {
         DeckCard card_attacked = getCardAtPosition_helper(coordinates_attacked, table);
 
         if ((turn == 1 && (x_attacked == 0 || x_attacked == 1)) || (turn == 2 && (x_attacked == 2 || x_attacked == 3))) {
-            if (!card_attacker.isHas_attacked()) {
+            if (card_attacker != null && !card_attacker.isHas_attacked()) {
                 if (!card_attacker.isFrozen()) {
                     if (check_existsTank(table, turn) && checkTank(card_attacked) || !check_existsTank(table, turn)) {
                         Minion new_card_attacked = new Minion(card_attacked.getMana(), card_attacked.getDescription(),
@@ -370,6 +374,9 @@ public class ActionInterpretor {
         DeckCard card_attacker = getCardAtPosition_helper(coordinates_attacker, table);
         DeckCard card_attacked = getCardAtPosition_helper(coordinates_attacked, table);
 
+        if(card_attacker == null || card_attacked == null)
+            return;
+
         if (!card_attacker.isFrozen()) {
             if (!card_attacker.isHas_attacked()) {
                 if (card_attacker.getName().equals("Disciple")) {
@@ -415,11 +422,13 @@ public class ActionInterpretor {
 
     }
 
-public void useAttackHero(ArrayNode output, Coordinates coordinates_attacker, ActionsInput action, Player player, DeckCard card_attacker, Table table, int turn) {
+public void useAttackHero(ArrayNode output, Coordinates coordinates_attacker, ActionsInput action, Player player, Table table, int turn) {
     int x_attacker = coordinates_attacker.getX();
     int y_attacker = coordinates_attacker.getX();
 
-    if(!card_attacker.isFrozen()) {
+    DeckCard card_attacker = getCardAtPosition_helper(coordinates_attacker, table);
+
+    if(card_attacker != null && !card_attacker.isFrozen()) {
         if(!card_attacker.isHas_attacked()) {
             if(!check_existsTank(table, turn)) {
                 Hero attacked_hero = player.getHero();
@@ -429,9 +438,14 @@ public void useAttackHero(ArrayNode output, Coordinates coordinates_attacker, Ac
 
                 if(attacked_hero.getHealth() <= 0) {
                     player.setHeroKilled(true);
-                    if(turn == 1)
+                    if(turn == 1) {
                         output.addObject().put("gameEnded", "Player one killed the enemy hero.");
-                    else output.addObject().put("gameEnded", "Player two killed the enemy hero.");
+                        GameStatistics.setPlayerOneWins(GameStatistics.getPlayerOneWins() + 1);
+                    }
+                    else {
+                        output.addObject().put("gameEnded", "Player two killed the enemy hero.");
+                        GameStatistics.setPlayerTwoWins(GameStatistics.getPlayerTwoWins() + 1);
+                    }
                 }
             }
 
