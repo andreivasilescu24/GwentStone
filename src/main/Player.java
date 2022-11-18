@@ -1,10 +1,8 @@
 package main;
 
-import fileio.CardInput;
-
 import java.util.ArrayList;
 
-public class Player {
+public final class Player {
     private ArrayList<DeckCard> handCards = new ArrayList<>();
     private ArrayList<DeckCard> deckCards = new ArrayList<>();
 
@@ -16,14 +14,14 @@ public class Player {
         return isHeroKilled;
     }
 
-    public void setHeroKilled(boolean heroKilled) {
+    public void setHeroKilled(final boolean heroKilled) {
         isHeroKilled = heroKilled;
     }
 
     //    private int index;
     private boolean turn;
 
-    public void setRound(int round) {
+    public void setRound(final int round) {
         this.round = round;
     }
 
@@ -32,18 +30,16 @@ public class Player {
     }
 
     private int mana;
+
     public int getMana() {
         return mana;
     }
-    public void setMana(int mana) {
+
+    public void setMana(final int mana) {
         this.mana = mana;
     }
 
-//    public int getIndex() {
-//        return index;
-//    }
-
-    public void setHero(Hero hero) {
+    public void setHero(final Hero hero) {
         this.hero = hero;
     }
 
@@ -55,7 +51,7 @@ public class Player {
 //        this.index = index;
 //    }
 
-    public void setTurn(boolean turn) {
+    public void setTurn(final boolean turn) {
         this.turn = turn;
     }
 
@@ -71,11 +67,11 @@ public class Player {
         return deckCards;
     }
 
-    public void setHandCards(ArrayList<DeckCard> handCards) {
+    public void setHandCards(final ArrayList<DeckCard> handCards) {
         this.handCards = handCards;
     }
 
-    public void setDeckCards(ArrayList<DeckCard> deckCards) {
+    public void setDeckCards(final ArrayList<DeckCard> deckCards) {
         this.deckCards = deckCards;
     }
 }

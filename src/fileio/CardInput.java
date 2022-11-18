@@ -1,7 +1,5 @@
 package fileio;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.util.ArrayList;
 
 public final class CardInput {

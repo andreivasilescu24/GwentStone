@@ -103,7 +103,7 @@ public final class Main {
             int index_player1_deck = startGameInput.getPlayerOneDeckIdx();
             int index_player2_deck = startGameInput.getPlayerTwoDeckIdx();
 
-//             obtin deck-ul de la index
+            // obtin deck-ul de la index
             ArrayList<CardInput> player1_deck = player1_all_decks.getDecks().get(index_player1_deck);
             ArrayList<CardInput> player2_deck = player2_all_decks.getDecks().get(index_player2_deck);
 
@@ -121,8 +121,8 @@ public final class Main {
 
             // Cast deck cards
             CardTypeCaster card_caster = new CardTypeCaster();
-            card_caster.cast_cards(player1_chosen_deck.getDeck(), player1);
-            card_caster.cast_cards(player2_chosen_deck.getDeck(), player2);
+            card_caster.castCards(player1_chosen_deck.getDeck(), player1);
+            card_caster.castCards(player2_chosen_deck.getDeck(), player2);
 
             // introducem in array-ul de carti din mana, prima carte trasa din deck
             player1.getHandCards().add(player1.getDeckCards().get(0));
@@ -136,8 +136,8 @@ public final class Main {
             CardInput player1_hero = startGameInput.getPlayerOneHero();
             CardInput player2_hero = startGameInput.getPlayerTwoHero();
 
-            card_caster.cast_hero(player1_hero, player1);
-            card_caster.cast_hero(player2_hero, player2);
+            card_caster.castHero(player1_hero, player1);
+            card_caster.castHero(player2_hero, player2);
 
 
             //obtin actiunile
@@ -244,28 +244,22 @@ public final class Main {
                         actionInterpretor.useHeroAbility(output, action, table, turn, player1);
                     else actionInterpretor.useHeroAbility(output, action, table, turn, player2);
 
-                }
-
-                else if(actual_action.equals("getPlayerOneWins")) {
+                } else if (actual_action.equals("getPlayerOneWins")) {
                     output.addObject().put("command", action.getCommand()).put("output", GameStatistics.getPlayerOneWins());
-                }
-
-                else if(actual_action.equals("getPlayerTwoWins")) {
+                } else if (actual_action.equals("getPlayerTwoWins")) {
                     output.addObject().put("command", action.getCommand()).put("output", GameStatistics.getPlayerTwoWins());
-                }
-
-                else if(actual_action.equals("getTotalGamesPlayed")) {
+                } else if (actual_action.equals("getTotalGamesPlayed")) {
                     output.addObject().put("command", action.getCommand()).put("output", GameStatistics.getGamesPlayed());
                 }
             }
 
         }
 
-            ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
-            objectWriter.writeValue(new File(filePath2), output);
+        ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+        objectWriter.writeValue(new File(filePath2), output);
 
 
-        }
+    }
 
 
 }

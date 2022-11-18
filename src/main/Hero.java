@@ -4,15 +4,19 @@ import fileio.CardInput;
 
 import java.util.ArrayList;
 
-public class Hero extends DeckCard {
+public final class Hero extends DeckCard {
     private int health;
-    public Hero(CardInput deck_card) {
-        super(deck_card);
-        this.health = 30;
+    private final int startingHeroHealth = 30;
+
+    public Hero(final CardInput deckCard) {
+        super(deckCard);
+        this.health = startingHeroHealth;
     }
 
-    public Hero(int mana, String description, ArrayList<String> colors, String name, boolean frozen, boolean has_attacked, int health) {
-        super(mana, description, colors, name, frozen, has_attacked);
+    public Hero(final int mana, final String description, final ArrayList<String> colors,
+                final String name, final boolean frozen, final boolean hasAttacked,
+                final int health) {
+        super(mana, description, colors, name, frozen, hasAttacked);
         this.health = health;
     }
 
@@ -20,7 +24,7 @@ public class Hero extends DeckCard {
         return health;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(final int health) {
         this.health = health;
     }
 }

@@ -13,40 +13,41 @@ public class DeckCard {
     @JsonIgnore
     private boolean frozen;
     @JsonIgnore
-    private boolean has_attacked;
+    private boolean hasAttacked;
 
-    public void setHas_attacked(boolean has_attacked) {
-        this.has_attacked = has_attacked;
+    public void setHasAttacked(final boolean hasAttacked) {
+        this.hasAttacked = hasAttacked;
     }
 
-    public boolean isHas_attacked() {
-        return has_attacked;
+    public boolean isHasAttacked() {
+        return hasAttacked;
     }
 
     public boolean isFrozen() {
         return frozen;
     }
 
-    public void setFrozen(boolean frozen) {
+    public void setFrozen(final boolean frozen) {
         this.frozen = frozen;
     }
 
-    public DeckCard(CardInput deckCard) {
+    public DeckCard(final CardInput deckCard) {
         this.mana = deckCard.getMana();
         this.description = deckCard.getDescription();
         this.colors = deckCard.getColors();
         this.name = deckCard.getName();
         this.frozen = false;
-        this.has_attacked = false;
+        this.hasAttacked = false;
     }
 
-    public DeckCard(int mana, String description, ArrayList<String> colors, String name, boolean frozen, boolean has_attacked) {
+    public DeckCard(final int mana, final String description, final ArrayList<String> colors,
+                    final String name, final boolean frozen, final boolean hasAttacked) {
         this.mana = mana;
         this.description = description;
         this.colors = colors;
         this.name = name;
         this.frozen = frozen;
-        this.has_attacked = has_attacked;
+        this.hasAttacked = hasAttacked;
     }
 
     public int getMana() {
@@ -65,19 +66,19 @@ public class DeckCard {
         return name;
     }
 
-    public void setMana(int mana) {
+    public void setMana(final int mana) {
         this.mana = mana;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
-    public void setColors(ArrayList<String> colors) {
+    public void setColors(final ArrayList<String> colors) {
         this.colors = colors;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 }
