@@ -11,7 +11,4 @@ public final class Deck {
         return deck;
     }
 
-    public void setDeck(final ArrayList<CardInput> deck) {
-        this.deck = deck;
-    }
 }

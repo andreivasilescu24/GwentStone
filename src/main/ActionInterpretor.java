@@ -9,6 +9,12 @@ import java.util.Collections;
 
 public final class ActionInterpretor {
 
+    /**
+     *
+     * @param player1 player1 on the game table
+     * @param player2 player2 on the game table
+     * @return whose turn is it
+     */
     public int checkPlayerTurn(final Player player1, final Player player2) {
         int turn = 0;
         if (player1.isTurn() && !player2.isTurn()) {
@@ -20,6 +26,12 @@ public final class ActionInterpretor {
         return turn;
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param player player whose deck will be printed
+     * @param action the action command in the JSON input file
+     */
     public void getPlayerDeck(final ArrayNode output, final Player player,
                               final ActionsInput action) {
         ArrayList<DeckCard> deckCardsAux = new ArrayList<>();
@@ -31,6 +43,12 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param player player whose hero card will be printed
+     * @param action the action command in the JSON input file
+     */
     public void getPlayerHero(final ArrayNode output, final Player player,
                               final ActionsInput action) {
         Hero playerHero = player.getHero();
@@ -42,6 +60,15 @@ public final class ActionInterpretor {
                 action.getPlayerIdx()).putPOJO("output", auxHero);
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param player1 player1 on the game table
+     * @param player2 player2 on the game table
+     * @param action the action command in the JSON input file
+     *
+     * function is called when the command with the same name is received, printing whose turn is it
+     */
     public void getPlayerTurn(final ArrayNode output, final Player player1, final Player player2,
                               final ActionsInput action) {
         int turn = 0;
@@ -52,6 +79,14 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param table the game table
+     * @param player1 player1 on the game table
+     * @param player2 player2 on the game table
+     *
+     * function is called when each player played its turn (when a new round is about to start)
+     */
     public void startNewRound(final Table table, final Player player1, final Player player2) {
         player1.setRound(player1.getRound() + 1);
         player2.setRound(player2.getRound() + 1);
@@ -85,6 +120,17 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param table the game table
+     * @param player1 player1 on the game table
+     * @param player2 player2 on the game table
+     * @param endPlayerTurnCounter how many "endPlayerTurn" command were given (an even number of
+     *                             commands says that it's time for a new round)
+     *
+     *  function is called when the command with the same name is received, making the necessary
+     *  changes in the cards and player classes
+     */
     public void endPlayerTurn(final Table table, final Player player1, final Player player2,
                               final int endPlayerTurnCounter) {
 
@@ -130,6 +176,14 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param table the game table
+     * @param player player whose turn has came
+     * @param action the action command in the JSON input file
+     * @param turn whose turn is it (1 or 2 - indexes of the players)
+     */
     public void placeCard(final ArrayNode output, final Table table, final Player player,
                           final ActionsInput action, final int turn) {
 
@@ -230,7 +284,14 @@ public final class ActionInterpretor {
         }
     }
 
-
+    /**
+     *
+     * @param output the output of the test
+     * @param player player whose turn has came
+     * @param action the action command in the JSON input file
+     *
+     * prints in output the cards a plauer has in his hand at the moment
+     */
     public void getCardsInHand(final ArrayNode output, final Player player,
                                final ActionsInput action) {
 
@@ -244,6 +305,14 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param player player whose turn has came
+     * @param action the action command in the JSON input file
+     *
+     * prints in output the player's mana
+     */
     public void getPlayerMana(final ArrayNode output, final Player player,
                               final ActionsInput action) {
 
@@ -253,6 +322,14 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param table the game table
+     * @param action the action command in the JSON input file
+     *
+     * prints in output the cards that are on the table at the moment
+     */
     public void getCardsOnTable(final ArrayNode output, final Table table,
                                 final ActionsInput action) {
         ArrayList<ArrayList<DeckCard>> auxTableCards = new ArrayList<>();
@@ -262,6 +339,12 @@ public final class ActionInterpretor {
                 .putPOJO("output", auxTableCards);
     }
 
+    /**
+     *
+     * @param coordinates the coordinates of the card that we want to access, on the table
+     * @param table the game table
+     * @return the card found at the coordinates given in the first parameter
+     */
     public DeckCard getCardAtPositionHelper(final Coordinates coordinates, final Table table) {
         int x = coordinates.getX();
         int y = coordinates.getY();
@@ -289,7 +372,13 @@ public final class ActionInterpretor {
 
     }
 
-
+    /**
+     *
+     * @param output the output of the test
+     * @param coordinates the coordinates of the card that we want to access, on the table
+     * @param table the game table
+     * @param action the action command in the JSON input file
+     */
     public void getCardAtPosition(final ArrayNode output, final Coordinates coordinates,
                                   final Table table, final ActionsInput action) {
 
@@ -312,6 +401,12 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param player the player whose environment cards we want to add to the output
+     * @param action the action command in the JSON input file
+     */
     public void getEnvironmentCardsInHand(final ArrayNode output, final Player player,
                                           final ActionsInput action) {
         ArrayList<DeckCard> environmentCards = new ArrayList<>();
@@ -328,6 +423,14 @@ public final class ActionInterpretor {
                 .putPOJO("output", environmentCards);
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param table the game table
+     * @param player player whose environment card we want to use
+     * @param action the action command in the JSON input file
+     * @param turn whose turn is it (1 or 2 - indexes of the players)
+     */
     public void useEnvironmentCard(final ArrayNode output, final Table table, final Player player,
                                    final ActionsInput action, final int turn) {
         DeckCard myEnvCard = player.getHandCards().get(action.getHandIdx());
@@ -384,6 +487,12 @@ public final class ActionInterpretor {
         }
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param table the game table
+     * @param action the action command in the JSON input file
+     */
     public void getFrozenCardsOnTable(final ArrayNode output, final Table table,
                                       final ActionsInput action) {
         ArrayList<DeckCard> frozenCardsAux = new ArrayList<>();
@@ -399,6 +508,11 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param card the card we want to check whether it's a tank or not
+     * @return true, if the card given as parameter is a tank card or else, false
+     */
     public boolean checkTank(final DeckCard card) {
         if (card.getName().equals("Goliath") || card.getName().equals("Warden")) {
             return true;
@@ -407,6 +521,12 @@ public final class ActionInterpretor {
         return false;
     }
 
+    /**
+     *
+     * @param table the game table
+     * @param turn whose turn is it (1 or 2 - indexes of the players)
+     * @return true, if the player has at least one tank card on its table rows, or else, false
+     */
     public boolean checkExistsTank(final Table table, final int turn) {
         final int maxRowLimitPlayer1 = 4;
         final int maxRowLimitPlayer2 = 2;
@@ -433,6 +553,17 @@ public final class ActionInterpretor {
         }
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param table the game table
+     * @param action the action command in the JSON input file
+     * @param coordinatesAttacker coordinates on the table of the card which
+     *                            belongs to the attacker player
+     * @param coordinatesAttacked coordinates on the table of the card which
+     *                            belongs to the attacked player
+     * @param turn whose turn is it (1 or 2 - indexes of the players)
+     */
     public void cardUsesAttack(final ArrayNode output, final Table table, final ActionsInput action,
                                final Coordinates coordinatesAttacker,
                                final Coordinates coordinatesAttacked, final int turn) {
@@ -500,6 +631,17 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param table the game table
+     * @param action the action command in the JSON input file
+     * @param coordinatesAttacker coordinates on the table of the card which
+     *                            belongs to the attacker player
+     * @param coordinatesAttacked coordinates on the table of the card which
+     *                            belongs to the attacked player
+     * @param turn whose turn is it (1 or 2 - indexes of the players)
+     */
     public void cardUsesAbility(final ArrayNode output, final Table table,
                                 final ActionsInput action, final Coordinates coordinatesAttacker,
                                 final Coordinates coordinatesAttacked, final int turn) {
@@ -526,8 +668,8 @@ public final class ActionInterpretor {
                             || (turn == 2 && (attackedX == frontRowPlayer2
                             || attackedX == backRowPlayer2))) {
                         MinionCardAbilities minionCardAbilities = new MinionCardAbilities();
-                        minionCardAbilities.Gods_Plan(cardAttacker,
-                                cardAttacked, table, coordinatesAttacked, coordinatesAttacker);
+                        minionCardAbilities.godsPlan(cardAttacker,
+                                cardAttacked, table, coordinatesAttacked);
                     } else {
                         output.addObject().put("command", action.getCommand())
                                 .putPOJO("cardAttacker", coordinatesAttacker)
@@ -577,6 +719,16 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param coordinatesAttacker coordinates on the table of the card which
+     *                            belongs to the attacker player
+     * @param action the action command in the JSON input file
+     * @param player player whose hero will be attacked
+     * @param table the game table
+     * @param turn whose turn is it (1 or 2 - indexes of the players)
+     */
     public void useAttackHero(final ArrayNode output, final Coordinates coordinatesAttacker,
                               final ActionsInput action, final Player player,
                               final Table table, final int turn) {
@@ -623,6 +775,14 @@ public final class ActionInterpretor {
 
     }
 
+    /**
+     *
+     * @param output the output of the test
+     * @param action the action command in the JSON input file
+     * @param table the game table
+     * @param turn whose turn is it (1 or 2 - indexes of the players)
+     * @param player player whose hero will use its ability
+     */
     public void useHeroAbility(final ArrayNode output, final ActionsInput action,
                                final Table table, final int turn, final Player player) {
 
