@@ -21,12 +21,11 @@ Starting audit...
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\HeroCardAbilities.java:69:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\HeroCardAbilities.java:79:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:9:14: Using the '.*' form of import should be avoided - fileio.*. [AvoidStarImport]
-[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:68:5: Method length is 214 lines (max allowed is 150). [MethodLength]
-[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:132: Line is longer than 100 characters (found 105). [LineLength]
+[ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\Main.java:68:5: Method length is 201 lines (max allowed is 150). [MethodLength]
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\MinionCardAbilities.java:7:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\MinionCardAbilities.java:20:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\MinionCardAbilities.java:29:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\MinionCardAbilities.java:54:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] F:\Andrei\ANUL II - FACULTATE\Semestrul I\POO\Tema1-POO\.\src\main\MinionCardAbilities.java:75:5: Missing a Javadoc comment. [MissingJavadocMethod]
 Audit done.
-Checkstyle ends with 29 errors.
+Checkstyle ends with 28 errors.

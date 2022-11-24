@@ -112,12 +112,6 @@ public final class ActionInterpretor {
             player2.getDeckCards().remove(0);
         }
 
-        for (ArrayList<DeckCard> tableRowAux : table.getTableCards()) {
-            for (DeckCard auxCard : tableRowAux) {
-                auxCard.setHasAttacked(false);
-            }
-        }
-
     }
 
     /**

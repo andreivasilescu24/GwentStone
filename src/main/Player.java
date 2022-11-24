@@ -9,6 +9,8 @@ public final class Player {
     private boolean isHeroKilled;
     private int round;
     private Hero hero;
+    private boolean turn;
+    private int mana;
 
     public boolean isHeroKilled() {
         return isHeroKilled;
@@ -18,9 +20,6 @@ public final class Player {
         isHeroKilled = heroKilled;
     }
 
-    //    private int index;
-    private boolean turn;
-
     public void setRound(final int round) {
         this.round = round;
     }
@@ -28,8 +27,6 @@ public final class Player {
     public int getRound() {
         return round;
     }
-
-    private int mana;
 
     public int getMana() {
         return mana;
@@ -46,10 +43,6 @@ public final class Player {
     public Hero getHero() {
         return hero;
     }
-
-//    public void setIndex(int index) {
-//        this.index = index;
-//    }
 
     public void setTurn(final boolean turn) {
         this.turn = turn;

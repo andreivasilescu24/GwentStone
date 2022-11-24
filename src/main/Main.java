@@ -117,21 +117,10 @@ public final class Main {
             Collections.shuffle(player2ChosenDeck.getDeck(),
                     new Random(startGameInput.getShuffleSeed()));
 
-
             // Cast deck cards to a type (environment or minion)
             CardTypeCaster cardCaster = new CardTypeCaster();
             cardCaster.castCards(player1ChosenDeck.getDeck(), player1);
             cardCaster.castCards(player2ChosenDeck.getDeck(), player2);
-
-            /* The first card in the deck will be drawn as soon as the first round starts
-            *  so it will be put in player's hand cards
-            */
-            player1.getHandCards().add(player1.getDeckCards().get(0));
-            player2.getHandCards().add(player2.getDeckCards().get(0));
-
-            // remove the first card in the deck, as it was drawn from the deck and put in the hand cards
-            player1.getDeckCards().remove(0);
-            player2.getDeckCards().remove(0);
 
             CardInput player1Hero = startGameInput.getPlayerOneHero();
             CardInput player2Hero = startGameInput.getPlayerTwoHero();
@@ -144,10 +133,8 @@ public final class Main {
 
             ActionInterpretor actionInterpretor = new ActionInterpretor();
 
-            player1.setRound(1);
-            player2.setRound(1);
-            player1.setMana(player1.getRound());
-            player2.setMana(player2.getRound());
+            // first round starts, once the game starts
+            actionInterpretor.startNewRound(table, player1, player2);
 
             int endPlayerTurnCounter = 0;
 
